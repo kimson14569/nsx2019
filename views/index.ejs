@@ -1,6 +1,44 @@
-<h2>Hello</h2>
+<!----<h2>Hello</h2>
 <ul>
     <% users.forEach(function(user){ %>
         <li><%=user%></li>
       <% }); %>
-</ul>
+</ul>-->
+
+<tbody>
+    <% users.forEach(function(user){ %>
+      <tr>
+        <th><%=user.name%></th>
+        <td><%=user.class%></td>
+      </tr>
+      <% }); %>
+</tbody>
+
+<html>
+  
+<table style="main">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Class</th>
+    </tr>
+  </thead>
+  <body>
+    <tr>
+      <td>Quyen</td>
+      <td>PQ-Web-D002</td>
+    </tr>
+    <tr>
+      <td>Chi Dung</td>
+      <td>PQ-Web-D002</td>
+    </tr>
+    <tr>
+      <td>Mai</td>
+      <td>PQ-Web-D002</td>
+    </tr><tr>
+      <td>Do</td>
+      <td>PQ-Web-D002</td>
+    </tr>
+  </body>
+</table>
+</html>

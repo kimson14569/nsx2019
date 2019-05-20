@@ -3,6 +3,7 @@ const app = express()
 const port = 5000
 
 app.set('view engine', 'ejs')
+app.use(express.static(__dirname + '/assets'))
 
 app.get('/api/getlist', (req,res) => {
     res.json(['a','b','c'])
