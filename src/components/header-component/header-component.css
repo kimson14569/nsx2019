@@ -5,3 +5,13 @@
     padding: 20px;
     color: #ffffff;
 }
+
+.main-header ul {
+    list-style: none;
+}
+.main-header ul li {
+    display: inline;
+    padding: 10px;
+    color: blue;
+    text-transform: uppercase;
+}
