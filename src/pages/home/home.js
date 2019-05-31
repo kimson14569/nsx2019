@@ -1,13 +1,55 @@
 import React from 'react'
 
 class HomePage extends React.Component {
+    constructor() {
+        super()
+        this.state = {
+            data: [
+                {
+                    name: 'phuong'
+                },
+                {
+                    name: 'quyen'
+                },
+                {
+                    name: 'nguyen'
+                },
+                {
+                    name: 'hanh'
+                },
+                {
+                    name: 'mai'
+                },
+                {
+                    name: 'thuan'
+                },
+                {
+                    name: 'tuan anh'
+                }
+            ]
+        }
+        console.log(this.state.data)
+    }
     render() {
         return (
             <React.Fragment>
                 <div className='home-main-top'>
-                    Hello
+                    <ul>
+                        {
+                            this.state.data.map((item, index) => {
+                                return(
+                                    <li>
+                                        <span className='item-title'>Name:</span>
+                                        <span className='item-title'>{item.name}</span>
+                                    </li>
+                                )
+                            }
+
+                            )
+                        }
+                        
+                    </ul>
                 </div>
-                <div>Home Page</div>
             </React.Fragment>
         )
     }
