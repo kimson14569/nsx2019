@@ -2,9 +2,8 @@ import React from 'react';
 import './header-component.scss'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import FormControl from 'react-bootstrap/Form'
+import {FormControl, Form} from 'react-bootstrap'
 
 class HeaderComp extends React.Component {
     render () {
