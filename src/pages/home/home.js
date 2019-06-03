@@ -31,31 +31,30 @@ class HomePage extends React.Component {
         console.log(this.state.data)
     }
     render() {
-        return (
-            const els = this state.data.map((item, index) => {
+            // const els = this state.data.map((item, index) => {
                 return (
-                    <li>
-                        <span className='item-title'>Name:</span>
-                        <span className='item-title'>{item.name}</span>
-                    </li>
-                )
-                }
-            )
+            //         <li>
+            //             <span className='item-title'>Name:</span>
+            //             <span className='item-title'>{item.name}</span>
+            //         </li>
+            //     )
+            //     }
+            // )
             <React.Fragment>
                 <div className='home-main-top'>
                     <ul>
                         {
-                        //    this.state.data.map((item, index) => {
-                        //        return(
-                        //            <li>
-                        //                <span className='item-title'>Name:</span>
-                            //             <span className='item-title'>{item.name}</span>
-                            //         </li>
-                            //     )
-                            // }
+                            this.state.data.map((item, index) => {
+                                return(
+                                    <li>
+                                        <span className='item-title'>Name:</span>
+                                         <span className='item-title'>{item.name}</span>
+                                     </li>
+                                 )
+                             }
 
-                            // )
-                            els
+                             )
+                            // els
                         }
                         
                     </ul>
