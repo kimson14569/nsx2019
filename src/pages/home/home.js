@@ -1,8 +1,9 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
-import {Card, CardDeck} from 'react-bootstrap'
+import {Card} from 'react-bootstrap'
 import './home.scss'
 import {Link} from 'react-router-dom'
+import {Jumbotron, Container} from 'react-bootstrap'
   
 class HomePage extends React.Component {
     constructor() {
@@ -48,6 +49,17 @@ class HomePage extends React.Component {
             //     }
             // )
             <React.Fragment>
+              <div>
+              <Jumbotron fluid>
+                <Container>
+                  <h1>Welcom to My Website</h1>
+                  <p>
+                    This is a modified jumbotron that occupies the entire horizontal space of
+                    its parent.
+                  </p>
+                </Container>
+              </Jumbotron>
+              </div>
                 <div className='home-main-top'>
                     <ul>
                         {
