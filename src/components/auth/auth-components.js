@@ -9,7 +9,7 @@ class Auth extends React.Component {
         const cookies = new Cookies();
 
         this.state = {
-            logined: cookies.get('isLogin')
+            logined: cookies.get('isLogin') 
         }
 
         console.log(this.state)

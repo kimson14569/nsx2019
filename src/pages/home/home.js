@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
-import {Card, CardDeck} from 'react-bootstrap'
+import {Card} from 'react-bootstrap'
 import './home.scss'
 import {Link} from 'react-router-dom'
 import Cookies from 'universal-cookie'
