@@ -3,18 +3,52 @@ import Card from 'react-bootstrap/Card'
 import {Form, Row, Col} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import './login.scss'
+const axios = require('axios');
 
 class LoginPages extends React.Component {
-    
+    constructor() {
+        super()
+        this.state = {
+            response: 'Hello'
+        }
+    }
+    componentDidMount() {
+        let self = this
+        axios.get('http://localhost:4000/api/hello')
+        .then(function (response) {
+            // handle success
+            console.log(response);
+            let els = response.data.members.map((key, index) => {
+                return (
+                    <li key={index}>{key.name} - {key.class}</li>
+                )
+            })
+            console.log(els)
+            self.setState({
+                response: els
+            })
+            console.log(self.state)
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
+    }
     render() {
         return (
             <React.Fragment>
+                <div>
+                    {this.state.response}
+                </div>
                 <div className="main-login">
                     <Card>
                     <Form>
                         <Form.Group as={Row} controlId="formHorizontalEmail">
                             <Form.Label column sm={2}>
-                            Email
+                            Email {this.state.response}
                             </Form.Label>
                             <Col sm={10}>
                             <Form.Control type="email" placeholder="Email" />
