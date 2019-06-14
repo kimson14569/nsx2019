@@ -12,8 +12,21 @@ io.on('connection', (socket) => {
     console.log('Connectd')
     socket.on('s-message', (value) => {
         console.log(value)
-        io.sockets.emit('receive-message', value)
+        io.in(room).emit('receive-message', value)
     })
+
+    socket.on('join', (value) => {
+        socket.join(room)
+        io.in(room).emit('joined', value)
+        console.log(`${value.userName} joined`)
+    })
+
+    socket.on('leave', (value) => {
+        socket.leave(room)
+        io.in(room).emit('leaved', value)
+        console.log(`${value.userName} leaved`)
+    })
+
     socket.on('disconnect', () => {
         console.log('Client Disconnected.')
     })
