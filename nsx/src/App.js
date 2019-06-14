@@ -26,6 +26,7 @@ class App extends React.Component {
 
   onTypingFromMember() {
     socket.on('member_typing', (user) => {
+      if(user.userName !=this.state.userName)
       this.setMessage(`${user.userName} typing...`)
     })
   }
