@@ -15,12 +15,19 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    let self = this
     socket.on('receive-message', (value) => {
       this.setMessage(`${value.userName}: ${value.message}`)
     })
     this.onJoined()
     this.onLeaved()
+    this.onTypingFromMember()
+    this.onReceived()
+  }
+
+  onTypingFromMember() {
+    socket.on('member_typing', (user) => {
+      this.setMessage(`${user.userName} typing...`)
+    })
   }
 
   onReceived() {
@@ -46,7 +53,7 @@ class App extends React.Component {
   setMessage(message) {
     let self = this
     let messages = self.state.receiveMessages
-      messages = messages + '\n' + message
+      messages = message + '\n' + messages
       self.setState({
         receiveMessages: messages
       })
@@ -88,6 +95,12 @@ class App extends React.Component {
     })
   }
 
+  onChange = event => {
+    socket.emit('typing', {
+      userName: this.state.userName
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -97,7 +110,7 @@ class App extends React.Component {
               <textarea value={this.state.receiveMessages}></textarea>
             </div>
             <div className="send-message">
-              <input onKeyPress={this.onKeyPress}></input>
+              <input onKeyPress={this.onKeyPress} onChange={this.onChange}></input>
               <button onClick={e => this.onClick(e)}>{this.state.buttonTittle}</button>
             </div>
           </div>

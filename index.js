@@ -30,6 +30,13 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Client Disconnected.')
     })
+
+    socket.on('typing', (value) => {
+        // console.log(`${value.userName} typing...`)
+        io.in(room).emit('member-typing', {
+            userName: value.userName
+        })
+    })
 })
 
 app.get('/', (req, res) => {
