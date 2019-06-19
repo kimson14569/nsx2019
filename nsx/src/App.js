@@ -2,6 +2,7 @@ import React from 'react';
 import './App.scss';
 import socketIOClient from 'socket.io-client'
 import MessageList from './components/message-list/message-list';
+
 const socket = socketIOClient('192.168.1.152:5000')
 
 class App extends React.Component {
@@ -11,7 +12,7 @@ class App extends React.Component {
       socketServer: '192.168.1.152:5000',
       receiveMessages: '',
       buttonTitle: 'Join',
-      userName: 'phuongngo',
+      userName: 'Kson',
       message: '',
       messages: [
       ]
@@ -37,6 +38,7 @@ class App extends React.Component {
     socket.on('receive-message', (value) => {
       let item = {
         user: value.userName,
+        avatar: value.avatar,
         message: value.message,
         fr: value.userName == this.state.userName ? 'fr' : ''
       }

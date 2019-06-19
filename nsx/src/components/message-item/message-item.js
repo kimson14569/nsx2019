@@ -12,11 +12,12 @@ class MessageItem extends React.Component {
                 <div className='message-item'>
                     <div className={'message-item-avatar ' + this.props.value.fr }>
                         <div className='avatar-img'>
+                            {this.props.value.avatar}
                         </div>
                     </div>
                     <div className={'message-item-content ' + this.props.value.fr}>
                         <div className='content'>
-                            {this.props.value.message}
+                            <div dangerouslySetInnerHTML={{__html:this.props.value.message}}></div>
                         </div>
                         <div className='created'>
                             {this.props.value.created}

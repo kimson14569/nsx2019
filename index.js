@@ -11,6 +11,10 @@ io.on('connection', (socket) => {
     console.log('Connectd')
     socket.on('send-message', (value) => {
         console.log(value)
+        let msg = value.message
+        value.message = msg.replace(/\:\)/g, '<li class="fas fa-smile"></li>')
+        value.message = convert2Icon(value.message)
+        value.avatar = createAvatar(value.userName)
         io.in(room).emit('receive-message', value)
     })
     
@@ -43,3 +47,16 @@ app.get('/', (req, res) => {
 server.listen(port, () => {
     console.log(`Server started with port ${port}`)
 })
+
+function convert2Icon(message) {
+    return message
+        .replace(/\:\)/gI, '<i class="fas fa-smile"></i>')
+        .replace(/\:\(/gI, '<i class="fas fa-frown"></i>')
+        .replace(/\;\(/gI, '<i class="fas fa-sad-tear"></i>')
+        .replace(/\;\)/gI, '<i class="fas fa-sad-cry"></i>')
+        .replace(/\:\o/gI, '<i class="fas fa-surprise"></i>')
+}
+
+function createAvatar(userStr) {
+    return userStr.substr(0, 2)
+}
