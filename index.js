@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
         socket.join(room)
         io.in(room).emit('joined', value)
         console.log(`${value.userName} joined`)
+        getOldDataFromDB()
     })
     
     socket.on('leave', (value) => {
@@ -101,3 +102,5 @@ function save2DB(value, room) {
         })
     })
 }
+
+function getOldDataFromDB()
