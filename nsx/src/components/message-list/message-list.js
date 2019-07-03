@@ -5,6 +5,7 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 
 import socket from '../../services/socket-service/socket-service'
 
+
 class MessageList extends React.Component {
   constructor(props) {
     super(props)
@@ -24,8 +25,30 @@ class MessageList extends React.Component {
     this.onReceived()
     this.onTypingFromMember()
     this.onStopTyping()
+    this.receiveHistories()
   }  //tao method
 
+  receiveHistories() {
+    socket.on('histories', (values) => {
+      let items = this.state.messages
+      values.map((value, index) => {
+        let user = value.sent_by.trim()
+        let item = {
+          user: user,
+          // user: value.sent_by,
+          avatar: value.sent_by,
+          message: value.message,
+          createAt: value.created_at,
+          fr: user === this.state.userName ? 'fr' : ''
+        }
+        items.push(item)
+      })
+      this.setState({
+        messages: items
+      })
+      socket.off('histories')
+    })
+  }
 
   onReceived() {
     socket.on('receive-message', (value) => {

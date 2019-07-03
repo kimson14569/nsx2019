@@ -96,11 +96,21 @@ function convert2HTML(message) {
 
 function save2DB(value, room) {
     pool.connect(function(err, client, done) {
-        let sql = `insert into room(sent_by, created_at, message) values ('${value.userName}', '${value.create_at}', '${value.message}')`
+        let sql = `insert into chat(sent_by, created_at, message) values ('${value.userName}', '${value.create_at}', '${value.message}')`
         client.query(sql, function(err, result) {
             done()
         })
     })
 }
 
-function getOldDataFromDB()
+function getOldDataFromDB() {
+    pool.connect(function(err, client, done) {
+        client.query('select * from chat', function(err, result) {
+            done()
+            if(err) {
+                io.on(room).emit('histories', result.rows)
+                io.in(room).emit('joined', value)
+            }
+        })
+    })
+}

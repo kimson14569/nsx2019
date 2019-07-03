@@ -1,7 +1,8 @@
 import React from 'react'
 import './chat.scss';
 import MessageList from '../message-list/message-list'
-import SendMessage from '../send-message/send-message';
+import SendMessage from '../send-message/send-message'
+import RoomList from '../room-list/room-list'
 
 class Chat extends React.Component {
     constructor() {
@@ -13,6 +14,11 @@ class Chat extends React.Component {
             <React.Fragment>
                 <div className="Chat">
                     <div className='Chat-Container'>
+                        <div className='Chat=room'>
+                            {
+                                <RoomList></RoomList>
+                            }
+                        </div>
                         <div className='chat-box'>
                             <div className='receive-messages'>
                             {
