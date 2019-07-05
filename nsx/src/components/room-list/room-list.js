@@ -1,63 +1,56 @@
 import React from 'react'
-import socket from '../../services/socket-service/socket-service';
+import './room-list.scss'
+import { serverEndPoint, userName, socket } from '../../services/socket-service/socket-service'
+
+const axios = require('axios');
 
 class RoomList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            receiveMessages: '',
-            buttonTitle: 'Join',
-            userName: 'K son',
-            message: '',
-            messages: [
-            ]
-          }
+            room: []
+        }
     }
 
     componentDidMount() {
-        // onRoomJoin()
-        onReceived()
+        console.log(serverEndPoint)
+        let self = this
+        axios.get(`${serverEndPoint}/api/room-list`)
+        .then(function (response) {
+            console.log(response.data.data)
+            self.setState({
+                room: response.data.data
+            })
+        })
+        .catch(function(error) {
+            console.log(error)
+        })
+        .finally(function (response) {
+            
+          });
+        // gọi api trong database
     }
 
-    onRoomJoin() {
-        this.state.setMessage
-    }
-
-    onReceived() {
-        socket.on('receive-message', (value) => {
-          let item = {
-            user: value.userName,
-            avatar: value.avatar,
-            message: value.message,
-            createAt: value.created_at,
-            fr: value.userName == this.state.userName ? 'fr' : ''
-          }
-          let items = this.state.messages
-          items.push(item)
-          this.setState({
-            messages: items
+    onClick = (event, id) => {
+        console.log('clicked', id)
+        socket.emit('join', {
+           userName: userName,
+           room: id
           })
-          //   this.props.callback(item)
-          // //   this.setMessage(`${value.userName}: ${value.message}`)
-        })
-      }
-
-      setMessage(message) {
-        let messages = this.state.receiveMessages
-        // messages = messages + '\n' + message
-        messages = message + '\n' + messages
-        this.setState({
-          receiveMessages: messages
-        })
-      }
+        }    //gửi tín hiệu lên server
 
     render() {
         return (
             <React.Fragment>
                 <div className='room-container'>
-                    <ul className={this.state.message}>
-                        <li>WebD002</li>
-                        <li>D002</li>
+                    <ul>
+                        {
+                            this.state.room.map((value, index) => {
+                                return(
+                                    <li key={index} onClick={(e) => this.onClick(e,value.id)}>{value.name}</li>
+                                )        //2:biến       biến (event)                biến (id) trong database
+                            })
+                        }
                     </ul>
                 </div>
             </React.Fragment>

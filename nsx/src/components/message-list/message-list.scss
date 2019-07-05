@@ -3,9 +3,10 @@
     width: 100%;
     position: relative;
     overflow-y: auto;
-    background: #7F7FD5;
-    background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
-    background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    // background: #7F7FD5;
+    // background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    // background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    background: whitesmoke;
     .message-list {
         position: relative;
         max-height: 300px;

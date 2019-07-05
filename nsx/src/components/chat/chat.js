@@ -13,12 +13,12 @@ class Chat extends React.Component {
         return (
             <React.Fragment>
                 <div className="Chat">
+                    <div className='Chat-room'>
+                        {
+                            <RoomList></RoomList>
+                        }
+                    </div>
                     <div className='Chat-Container'>
-                        <div className='Chat-room'>
-                            {
-                                <RoomList></RoomList>
-                            }
-                        </div>
                         <div className='chat-box'>
                             <div className='receive-messages'>
                             {

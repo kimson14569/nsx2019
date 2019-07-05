@@ -1,5 +1,5 @@
 import React from 'react'
-import socket from '../../services/socket-service/socket-service'
+import {socket} from '../../services/socket-service/socket-service'
 
 class SendMessage extends React.Component {
     constructor(props){

@@ -7,6 +7,7 @@ const server = http.createServer(app)
 const io = socketIO(server)
 const moment = require('moment')
 const pg = require('pg')
+const cors = require('cors')
 
 const env = require('dotenv').config()
 
@@ -19,14 +20,11 @@ const config = {
 
 const pool = new pg.Pool(config)
 
-const room = 'main'
 io.on('connection', (socket) => {
     console.log('Connectd')
     socket.on('send-message', (value) => {
         console.log(value)
         let msg = value.message
-        // value.message = msg.replace(/\:\)/g, '<li class="fas fa-smile"></li>')
-        // value.message = convert2Icon(value.message)
         value.message = convert2HTML(value.message)
         value.avatar = createAvatar(value.userName)
         value.create_at = moment().format('MMMM Do YYYY, h:mm:ss a')
@@ -34,12 +32,13 @@ io.on('connection', (socket) => {
         save2DB(value, room)
     })
     
+    //server nhận tín hiệu
     socket.on('join', (value) => {
-        socket.join(room)
-        io.in(room).emit('joined', value)
-        console.log(`${value.userName} joined`)
-        getOldDataFromDB()
-        getRoomJoin()
+        let roomName = generrateroom(value.room)
+        socket.join(roomName)
+        io.in(roomName).emit('joined', value)
+        console.log(`${value.userName} joined ${value.room}`)
+        getHistories(roomName, value.room)
     })
     
     socket.on('leave', (value) => {
@@ -67,21 +66,28 @@ io.on('connection', (socket) => {
         console.log('Client disconnected.')
     })
 })
+
 app.get('/', (req, res) => {
     res.send('Hello World')
 })
+
+app.get('/api/room-list', (req, res) => {
+    pool.connect(function (req, client, done) {
+        client.query('select * from room', function(err, result) {
+            done()
+            if(!err) {
+                res.send({
+                    status: 200,
+                    data: result.rows
+                })
+            }
+        })
+    })
+})
+
 server.listen(port, () => {
     console.log(`Server started with port ${port}`)
 })
-
-// function convert2Icon(message) {
-//     return message
-//         .replace(/\:\)/gI, '<i class="fas fa-smile"></i>')
-//         .replace(/\:\)/gI, '<i class="fas fa-frown"></i>')
-//         .replace(/\;\)/gI, '<i class="fas fa-sad-tear"></i>')
-//         .replace(/\;\)/gI, '<i class="fas fa-sad-cry"></i>')
-//         .replace(/\:\o/gI, '<i class="fas fa-surprise"></i>')
-// }
 
 function createAvatar(userStr) {
     return userStr.substr(0, 2)
@@ -104,25 +110,22 @@ function save2DB(value, room) {
     })
 }
 
-function getOldDataFromDB() {
+function getHistories(roomName, room_id) {
     pool.connect(function(err, client, done) {
-        client.query('select * from chat', function(err, result) {
+        client.query(`select * from chat where room_id = ${room_id}` , function(err, result) {
             done()
             if(err) {
-                io.on(room).emit('histories', result.rows)
-                io.in(room).emit('joined', value)
+                io.on(room).emit('histories', {
+                    room: room_id,
+                    userName: userName,
+                    rows: result.rows
+                })
+                
             }
         })
     })
 }
 
-function getRoomJoin() {
-    pool.connect(function(err, client, done) {
-        client.query('select * from rooms', function(err, result) {
-            done()
-            if(err) {
-                io.on(room).emit('roomjoin', value)
-            }
-        })
-    })
-}
+function generrateroom() {
+    return `room ${id}`
+} 

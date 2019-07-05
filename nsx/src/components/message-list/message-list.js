@@ -3,7 +3,7 @@ import './message-list.scss'
 import MessageItem from '../message-item/message-item';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
-import socket from '../../services/socket-service/socket-service'
+import {socket,userName} from '../../services/socket-service/socket-service';
 
 
 class MessageList extends React.Component {
@@ -12,7 +12,7 @@ class MessageList extends React.Component {
     this.state = {
       receiveMessages: '',
       buttonTitle: 'Join',
-      userName: 'K son',
+      userName: userName,
       message: '',
       messages: [
       ],
@@ -26,12 +26,15 @@ class MessageList extends React.Component {
     this.onTypingFromMember()
     this.onStopTyping()
     this.receiveHistories()
-  }  //tao method
+  }  //tao method action
 
   receiveHistories() {
-    socket.on('histories', (values) => {
-      let items = this.state.messages
-      values.map((value, index) => {
+    socket.on(`histories-${this.state.userName}`, (values) => {
+      let items = []
+      if (values.userName !== this.state.userName) {
+        return
+      }
+      values.rows.map((value, index) => {
         let user = value.sent_by.trim()
         let item = {
           user: user,

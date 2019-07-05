@@ -1,0 +1,23 @@
+.room-container {
+    background: whitesmoke;
+    position: relative;
+    height: 300px;
+    ul {
+        list-style: none;
+        li {
+            height: 40px;
+            width: 90%;
+            text-align: left;
+            line-height: 40px;
+            padding-left: 5px;
+            border: none;
+            border-bottom: 0.5px solid black;
+        }
+        li:hover {
+            background-color: aqua;
+        }
+        li:active {
+            background-color: antiquewhite;
+        }
+    }
+}
