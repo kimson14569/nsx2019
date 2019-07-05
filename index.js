@@ -39,6 +39,7 @@ io.on('connection', (socket) => {
         io.in(room).emit('joined', value)
         console.log(`${value.userName} joined`)
         getOldDataFromDB()
+        getRoomJoin()
     })
     
     socket.on('leave', (value) => {
@@ -110,6 +111,17 @@ function getOldDataFromDB() {
             if(err) {
                 io.on(room).emit('histories', result.rows)
                 io.in(room).emit('joined', value)
+            }
+        })
+    })
+}
+
+function getRoomJoin() {
+    pool.connect(function(err, client, done) {
+        client.query('select * from rooms', function(err, result) {
+            done()
+            if(err) {
+                io.on(room).emit('roomjoin', value)
             }
         })
     })

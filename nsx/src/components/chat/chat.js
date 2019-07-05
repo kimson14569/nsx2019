@@ -14,7 +14,7 @@ class Chat extends React.Component {
             <React.Fragment>
                 <div className="Chat">
                     <div className='Chat-Container'>
-                        <div className='Chat=room'>
+                        <div className='Chat-room'>
                             {
                                 <RoomList></RoomList>
                             }
