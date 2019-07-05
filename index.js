@@ -25,11 +25,12 @@ io.on('connection', (socket) => {
     socket.on('send-message', (value) => {
         console.log(value)
         let msg = value.message
+        let roomName = generrateroom(value.room)
         value.message = convert2HTML(value.message)
         value.avatar = createAvatar(value.userName)
         value.create_at = moment().format('MMMM Do YYYY, h:mm:ss a')
-        io.in(room).emit('receive-message', value)
-        save2DB(value, room)
+        io.in(roomName).emit('receive-message', value)
+        save2DB(value, value.room)
     })
     
     //server nhận tín hiệu
@@ -103,7 +104,7 @@ function convert2HTML(message) {
 
 function save2DB(value, room) {
     pool.connect(function(err, client, done) {
-        let sql = `insert into chat(sent_by, created_at, message) values ('${value.userName}', '${value.create_at}', '${value.message}')`
+        let sql = `insert into chat(sent_by, created_at, message, room_id) values ('${value.userName}', '${value.create_at}', '${value.message}')`
         client.query(sql, function(err, result) {
             done()
         })

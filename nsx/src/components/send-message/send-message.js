@@ -13,7 +13,8 @@ class SendMessage extends React.Component {
             userName: 'K son',
             message: '',
             messages: [
-            ]
+            ],
+            room:0
           }
     }
 
@@ -26,6 +27,9 @@ class SendMessage extends React.Component {
         socket.on('joined', (user) => {
           console.log('Joined: ', user)
           this.setMessage(`User ${user.userName} joined`)
+          this.setState({
+            room: user.room
+          })
         })
       }
     
@@ -50,7 +54,8 @@ class SendMessage extends React.Component {
           console.log(event.target.value)
           socket.emit('send-message', {
             userName: this.state.userName,
-            message: event.target.value
+            message: event.target.value,
+            room: this.state.room
           })  
           this.setState({
             message: ''
