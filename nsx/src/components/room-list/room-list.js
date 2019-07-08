@@ -16,20 +16,20 @@ class RoomList extends React.Component {
         console.log(serverEndPoint)
         let self = this
         axios.get(`${serverEndPoint}/api/room-list`)
-        .then(function (response) {
-            console.log(response.data.data)
-            self.setState({
-                room: response.data.data
+            .then(function (response) {
+                console.log(response.data.data)
+                self.setState({
+                    room: response.data.data
+                })
             })
-        })
-        .catch(function(error) {
-            console.log(error)
-        })
-        .finally(function (response) {
-            
-          });
-        // gọi api trong database
-    }
+            .catch(function(error) {
+                console.log(error)
+            })
+            .finally(function (response) {
+                
+            });
+            // gọi api trong database
+        }
 
     onClick = (event, id) => {
         console.log('clicked', id)

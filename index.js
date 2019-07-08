@@ -25,8 +25,8 @@ io.on('connection', (socket) => {
     socket.on('send-message', (value) => {
         console.log(value)
         let msg = value.message
-        let roomName = generrateroom(value.room)
-        value.message = convert2HTML(value.message)
+        let roomName = generrateRoom(value.room)
+        value.message = convert2HTML(msg)
         value.avatar = createAvatar(value.userName)
         value.create_at = moment().format('MMMM Do YYYY, h:mm:ss a')
         io.in(roomName).emit('receive-message', value)
@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
     
     //server nhận tín hiệu
     socket.on('join', (value) => {
-        let roomName = generrateroom(value.room)
+        let roomName = generrateRoom(value.room)
         socket.join(roomName)
         io.in(roomName).emit('joined', value)
         console.log(`${value.userName} joined ${value.room}`)
@@ -50,8 +50,8 @@ io.on('connection', (socket) => {
 
     socket.on('typing', (value) => {
         console.log(`${value.userName} typing.....`)
-        console.log(value)
-        console.log(value.text == '')
+        // console.log(value)
+        // console.log(value.text == '')
         if(value.text == '') {
             io.in(room).emit('member_stop_typing', {
                 userName: value.userName
@@ -72,9 +72,9 @@ app.get('/', (req, res) => {
     res.send('Hello World')
 })
 
-app.get('/api/room-list', (req, res) => {
-    pool.connect(function (req, client, done) {
-        client.query('select * from room', function(err, result) {
+app.get('/api/room-list', cors(), (req, res) => {
+    pool.connect(function (err, client, done) {
+        client.query(`select * from chat`, function(err, result) {
             done()
             if(!err) {
                 res.send({
@@ -102,21 +102,21 @@ function convert2HTML(message) {
         .replace(/\:\+1/g, '<i class="em em-ok_hand"></i>')
 }
 
-function save2DB(value, room) {
+function save2DB(value, room_id) {
     pool.connect(function(err, client, done) {
-        let sql = `insert into chat(sent_by, created_at, message, room_id) values ('${value.userName}', '${value.create_at}', '${value.message}')`
+        let sql = `insert into chat (sent_by, created_at, message, room_id) values (${value.userName}, ${value.create_at}, ${value.message}, ${room_id})`
         client.query(sql, function(err, result) {
             done()
         })
     })
 }
 
-function getHistories(roomName, room_id) {
+function getHistories(roomName, room_id, userName) {
     pool.connect(function(err, client, done) {
         client.query(`select * from chat where room_id = ${room_id}` , function(err, result) {
             done()
-            if(err) {
-                io.on(room).emit('histories', {
+            if(!err) {
+                io.in(room).emit(`histories-${userName}`, {
                     room: room_id,
                     userName: userName,
                     rows: result.rows
@@ -127,6 +127,6 @@ function getHistories(roomName, room_id) {
     })
 }
 
-function generrateroom() {
+function generrateRoom() {
     return `room ${id}`
 } 

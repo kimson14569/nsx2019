@@ -5,6 +5,7 @@
 /nsx/node_modules
 /.pnp
 .pnp.js
+/ngrok.exe
 
 # testing
 /coverage
