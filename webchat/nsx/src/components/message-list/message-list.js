@@ -8,16 +8,6 @@ import {socket, userName} from '../../services/socket-service/socket-service'
 class MessageList extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      receiveMessages: '',
-      buttonTitle: 'Join',
-      userName: userName,
-      message: '',
-      messages: [
-      ],
-      typing: false,
-      users_typing: []
-    }
 
     var today = new Date(),
       ddate = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate(),
@@ -27,7 +17,7 @@ class MessageList extends React.Component {
       DaT: '',  //Date and Time
       receiveMessages: '',
       buttonTitle: 'Join',
-      userName: 'TQ An',
+      userName: userName,
       message: '',
       emoji: '',
       avatar: '', //Avatar by shorten userName
@@ -71,11 +61,12 @@ class MessageList extends React.Component {
       this.setState({
         messages: items
       })
-      socket.off('histories')
+       socket.off('histories')
+      
     })
   }
 
-  onReceive = () => {
+  onReceive() {
     socket.on('receive-message', (value) => {
       let item = {
         DaT: value.DaT, //using MomentJS to get Date and Time

@@ -15,7 +15,7 @@ class SendMessage extends React.Component {
       DaT: '',  //Date and Time
       receiveMessages: '',
       buttonTitle: 'Join',
-      userName: 'TQ An',
+      userName: 'K son',
       message: '',
       emoji: '',
       avatar: '', //Avatar by shorten userName
@@ -24,7 +24,8 @@ class SendMessage extends React.Component {
       date: ddate,
       time: ttime,
       messages: [
-      ]
+      ],
+      room:0
     }
   }
 
@@ -76,6 +77,9 @@ class SendMessage extends React.Component {
     socket.on('joined', (user) => {
       console.log('Joined: ', user)
       this.setMessage(`User ${user.userName} joined`)
+      this.setState({
+        room: user.room
+      })
     })
   }
 

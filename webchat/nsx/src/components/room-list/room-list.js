@@ -43,10 +43,10 @@ class RoomList extends React.Component {
         return (
             <React.Fragment>
                 <div className='room-bg'>
-                    <ul>
+                    {/* <ul>
                         <li>D002</li>
                         <li>common</li>
-                    </ul>
+                    </ul> */}
                     <ul>
                         {
                             this.state.room.map((value, index) => {

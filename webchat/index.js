@@ -4,7 +4,7 @@ const port = 5000
 const http = require('http')
 const socketIO = require('socket.io')
 const server = http.createServer(app)
-const io = socketIO(server)
+const io = socketIO(server)  // tên biến(thích j để đó) = tạo trên server 1 socket
 const moment = require('moment')
 const pg = require('pg')
 const mongoose = require('mongoose')
@@ -12,12 +12,15 @@ const room = 'main'
 const cors = require('cors')
 const env = require('dotenv').config()
 
+// io.on: đón nhận tín hiệu, io.off: ngắt kết nối, khử
+
 const config = {
     user: process.env.DB_USER,
     database: process.env.DB_NAME,
     password: process.env.DB_PASS,
     port: process.env.DB_PORT
 }
+console.log(config)
 
 const pool = new pg.Pool(config)
 
@@ -29,6 +32,8 @@ const pool = new pg.Pool(config)
 //     }
 
 // })
+
+app.use(cors())
 
 io.on('connection', (socket) => {
     console.log('Connected')
@@ -44,7 +49,10 @@ io.on('connection', (socket) => {
         io.in(room).emit('receive-message', value)
         save2DB(value, value.room)
     })
+    console.log(socket)
+    //tạo cầu nối server để nhận tín hiệu
 
+    //các action gửi cho client
     socket.on('join', (value) => {
         let roomName = generrateRoom(value.room)
         socket.join(room)
@@ -85,7 +93,7 @@ app.get('/', (req, res) => {
 
 app.get('/api/room-list', cors(), (req, res) => {
     pool.connect(function (err, client, done) {
-        client.query('select * from chat', function(err, result) {
+        client.query('select * from room', function(err, result) {
             done()
             if(!err) {
                 res.send({
@@ -128,7 +136,7 @@ function convert2Icon(messages) {
 
 function save2DB(value, room_id) {
     pool.connect(function(err, client, done) {
-        let sql = `insert into chat (sent_by, created_at, message, room_id) values (${value.userName}, ${value.create_at}, ${value.message}, ${room_id})`
+        let sql = `insert into chat (sent_by, created_at, message, room_id) values ('${value.userName}, ${value.create_at}, ${value.message}, ${room_id}')`
         client.query(sql, function(err, result) {
             done()
         })
@@ -151,7 +159,7 @@ function getHistories(roomName, room_id, userName) {
     })
 }
 
-function generrateRoom() {
+function generrateRoom(id) {
     return `room ${id}`
 } 
 
